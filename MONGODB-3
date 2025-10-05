@@ -1,0 +1,35 @@
+--QUES1
+db.members.aggregate([
+  {
+    $lookup: {
+      from: "borrow_records",          // collection to join
+      localField: "_id",               // field in members
+      foreignField: "member_id",       // field in borrow_records
+      as: "borrow_info"                // output array field
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      name: 1,
+      borrowed_books: "$borrow_info.book_id" // extract book IDs only
+    }
+  }
+]);
+
+
+--QUES2
+db.books.find(
+  { available_copies: 4 }
+);
+
+-QUES3
+db.borrow_records.updateMany(
+  {
+    return_date: null,
+    borrow_date: { $lt: new Date(new Date().setDate(new Date().getDate() - 30)) }
+  },
+  {
+    $set: { status: "Overdue" }
+  }
+);
