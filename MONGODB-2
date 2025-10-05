@@ -1,0 +1,34 @@
+--QUES1
+db.members.updateOne(
+  { _id: "M2002" },
+  { $set: { email: "bob.smith@example.com" } }
+);
+
+db.members.updateOne(
+  { _id: "M2003" },
+  { $set: { email: "charlie.brown@example.com" } }
+);
+
+db.members.updateOne(
+  { _id: "M2005" },
+  { $set: { email: "ethan.hunt@example.com" } }
+);
+
+
+--QUES2
+db.members.updateMany(
+  {
+    membership_type: "Regular",
+    joined_date: { $lt: new Date("2022-01-01") }
+  },
+  {
+    $set: { membership_type: "Premium" }
+  }
+);
+db.members.find().pretty();
+
+--QUES3
+db.members.deleteMany({
+  joined_date: { $lt: new Date("2020-01-01") }
+});
+db.members.find().pretty();
